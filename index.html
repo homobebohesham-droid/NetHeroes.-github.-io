@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لعبة الأمان</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
+    }
+    h1 {
+      font-size: 30px;
+      color: #ff3399;
+      text-shadow: 2px 2px #ffffff;
+      margin-bottom: 20px;
+    }
+    #question {
+      font-size: 22px;
+      margin: 20px 0;
+      color: #004466;
+      max-width: 90%;
+    }
+    button {
+      margin: 10px;
+      padding: 12px 24px;
+      font-size: 18px;
+      border: none;
+      border-radius: 15px;
+      background: linear-gradient(to right, #ff66b3, #ffcc66);
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+    }
+    button:hover {
+      background: linear-gradient(to right, #ff99cc, #ffd966);
+      transform: translateY(-3px);
+      box-shadow: 3px 3px 7px rgba(0,0,0,0.4);
+    }
+    #result {
+      font-weight: bold;
+      margin-top: 15px;
+      font-size: 20px;
+      color: #006600;
+    }
+    img {
+      max-width: 250px;
+      height: auto;
+      display: block;
+      margin: 10px auto;
+      border-radius: 15px;
+      border: 3px solid #ff99cc;
+      box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+
+<h1> 🎮لعبة الأمان على الإنترنت🎮</h1>
+
+<div id="imageBox"></div>
+<div id="question"></div>
+<div id="answers"></div>
+<div id="result"></div>
+
+<script>
+const questions = [
+  {
+    q:"لو حد بعتلك رابط مجهول تضغط عليه؟",
+    option:["نعم","لا"],
+    correctIndex:1,
+    img:"https://i.postimg.cc/D0zJ48GR/IMG.jpg"
+  },
+  {
+    q:"هل ينفع تعطي كلمة السر لصحابك؟",
+    option:["نعم","لا"],
+    correctIndex:1,
+    img:"https://i.postimg.cc/KzxgF98G/il-fullxfull-4248120438-mgc6.jpg"
+  },
+  {
+    q:"لو لقيت حد غريب طالب منك معلومات تعمل ايه؟",
+    option:["اديله","اتجاهله و ابلغ شخص كبير"],
+    correctIndex:1,
+    img:"https://i.postimg.cc/J42JJcPx/IMG.png"
+  },
+  {
+    q:"لو شفت لعبة فيها ضرب كتير او حاجة غريبة، هل هتلعبها؟",
+    option:["نعم","لا ابلغ شخص كبير"],
+    correctIndex:1,
+    img:"https://i.postimg.cc/L6CkDM6z/fighting-boys.jpg"
+  },
+  {
+    q:"لو شوفت صور عنيفة او مخيفة على الموبايل، تعمل ايه؟",
+    option:["تشوفها وتلعب بيها","تروح تبلغ بابا او ماما او تسأل حد كبير"],
+    correctIndex:1,
+    img:"https://i.postimg.cc/yYdckrXW/Parenta-Video-Games-Tackling-Violent-Play-Influenced-By-Games-1080x675.jpg"
+  },
+  {
+    q:"لو حد حاول يخوفك بحاجه او قالك تعمل حاجه غريبه ؛هتعمل ايه",
+    option:["اسمع كلامه","لا شكرا وابلغ حد كبير"],
+    correctIndex:1,
+    img:"https://i.postimg.cc/rpvQJ2jh/IMG-20250914-WA0008.jpg"
+  }
+];
+
+let score = 0;
+let current = 0;
+
+function loadQuestion (){
+  const q = questions[current];
+  document.getElementById("question").textContent = q.q;
+
+  // تحميل الصورة
+  const imgBox = document.getElementById("imageBox");
+  imgBox.innerHTML = `<img src="${q.img}" alt="صورة توضيحية">`;
+
+  const box = document.getElementById("answers");
+  box.innerHTML = "";
+  q.option.forEach((opt, idx) => {
+    const b = document.createElement("button");
+    b.textContent = opt;
+    b.onclick = () => checkAnswer(idx);
+    box.appendChild(b);
+  });
+  document.getElementById("result").textContent = "";
+}
+
+function checkAnswer(selectedIndex){
+  const q = questions[current];
+  if (selectedIndex === q.correctIndex){
+    score++;
+    document.getElementById("result").textContent = "صح ✅";
+  } else {
+    document.getElementById("result").textContent = "غلط ❌";
+  }
+
+  setTimeout(()=>{
+    current++;
+    if (current < questions.length){
+      loadQuestion();
+    } else endGame();
+  },1000);
+}
+
+function endGame(){
+  document.getElementById("imageBox").innerHTML = "";
+  document.getElementById("question").textContent = "انتهت اللعبة 🎉";
+  document.getElementById("answers").innerHTML = "";
+  document.getElementById("result").innerHTML =
+     "درجتك: " + score + " / " + questions.length +
+    "<br><br>: نصائح للامان علي الانترنت "+
+    "<br>🚫 لا تضغط على روابط مجهولة." +
+    "<br>🔑 لا تعطي كلمة السر لحد." +
+    "<br>🛡️ تجاهل الغرباء وبلغ شخص كبير." +
+    "<br>👨‍👩‍👧‍👦 اسأل ماما أو بابا لو شفت حاجة غريبة." +
+    "<br>🎮 اختار ألعاب آمنة ومناسبة لعمرك.";
+}
+
+loadQuestion();
+</script>
+</body>
+</html>
